@@ -1,4 +1,10 @@
-FROM OPENJDK:11
+FROM ubuntu:20.04 as build
+RUN apt update && \
+    apt install openjdk-17-jdk -y && \
+    apt install maven -y && \
+    apt install git -y && \
+    git clone https://github.com/spring-projects/spring-petclinic.git && \
+    cd spring-petclinic && \
+    ./mvnw package
 EXPOSE 8080
-COPY --from=/var/lib/jenkins/workspace/laharii/target/spring-petclinic-2.7.3.jar
-CMD [ "java","-jar","/spring-petclinic-2.7.3.jar" ]
+CMD [ "java", "-jar", "/spring-petclinic/target/spring-petclinic-3.0.0-SNAPSHOT.jar" ]
